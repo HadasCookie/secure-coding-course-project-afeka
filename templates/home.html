@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Communication_LTD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9ff9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6c9976;
+        }
+        .home-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .menu {
+            display: flex;
+            justify-content: center;
+            background-color: #94aa99;
+            width: 100%;
+            padding: 10px;
+        }
+        .menu a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2em;
+        }
+        .menu a:hover {
+            text-decoration: underline;
+        }
+        .form-container {
+            display: none;
+            margin-top: 50px;
+            width: 50%;
+            border: 1px solid #a8c3ae;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 98%;
+            padding: 10px;
+            border: 1px solid #a8c3ae;
+            border-radius: 7px;
+            font-size: 1em;
+        }
+        .form-actions {
+            text-align: right;
+        }
+        .form-actions button {
+            background-color: #94aa99;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .form-actions button:hover {
+            background-color: #6c9976;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #6c9976;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 5px 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .tooltip .asterisk {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <a href="#" onclick="showForm('add-client')">Add Client</a>
+        <a href="#" onclick="showForm('update-client')">Update Client</a>
+        <a href="#" onclick="showForm('search-client')">Search Client</a>
+    </div>
+    <div class="home-container">
+        <h1>Welcome to Communication_LTD</h1>
+        <p>Welcome, {{ username }}</p>
+    </div>
+
+    <div id="add-client" class="form-container">
+        <h2>Add New Client</h2>
+        <form id="add-client-form">
+            <div class="form-group">
+                <label for="first-name">First Name</label>
+                <input type="text" id="first-name" name="first-name" required>
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name</label>
+                <input type="text" id="last-name" name="last-name" required>
+            </div>
+            <div class="form-group">
+                <label for="cell-phone">Cell Phone</label>
+                <input type="text" id="cell-phone" name="cell-phone" required>
+            </div>
+            <div class="form-group">
+                <label for="browsing-package">Browsing Package</label>
+                <select id="browsing-package" name="browsing-package" required>
+                    <option value="basic">Basic</option>
+                    <option value="premium">Premium</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Add Client</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="update-client" class="form-container">
+        <h2>Update Existing Client</h2>
+        <form id="update-client-form">
+            <div class="form-group">
+                <label for="client-id">Client ID</label>
+                <input type="text" id="client-id" name="client-id" required>
+            </div>
+            <div class="form-group">
+                <label for="first-name">First Name</label>
+                <input type="text" id="update-first-name" name="first-name">
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name</label>
+                <input type="text" id="update-last-name" name="last-name">
+            </div>
+            <div class="form-group">
+                <label for="cell-phone">Cell Phone</label>
+                <input type="text" id="update-cell-phone" name="cell-phone">
+            </div>
+            <div class="form-group">
+                <label for="browsing-package">Browsing Package</label>
+                <select id="update-browsing-package" name="browsing-package">
+                    <option value="basic">Basic</option>
+                    <option value="premium">Premium</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Update Client</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="search-client" class="form-container">
+        <h2>Search Client</h2>
+        <form id="search-client-form">
+            <div class="form-group">
+                <label for="search-term">Search by Name or Cell Phone</label>
+                <input type="text" id="search-term" name="search-term" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Search</button>
+            </div>
+        </form>
+        <div id="search-results"></div>
+    </div>
+
+    <script>
+        function showForm(formId) {
+            document.querySelectorAll('.form-container').forEach(form => {
+                form.style.display = 'none';
+            });
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        document.getElementById('add-client-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const cellPhone = document.getElementById('cell-phone').value;
+            const browsingPackage = document.getElementById('browsing-package').value;
+
+            fetch('/clients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ first_name: firstName, last_name: lastName, cell_phone: cellPhone, browsing_package: browsingPackage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.getElementById('update-client-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const clientId = document.getElementById('client-id').value;
+            const firstName = document.getElementById('update-first-name').value;
+            const lastName = document.getElementById('update-last-name').value;
+            const cellPhone = document.getElementById('update-cell-phone').value;
+            const browsingPackage = document.getElementById('update-browsing-package').value;
+
+            fetch(`/clients/${clientId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ first_name: firstName, last_name: lastName, cell_phone: cellPhone, browsing_package: browsingPackage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.getElementById('search-client-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const searchTerm = document.getElementById('search-term').value;
+
+            fetch(`/clients/search?term=${searchTerm}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    const resultsContainer = document.getElementById('search-results');
+                    resultsContainer.innerHTML = '';
+                    data.forEach(client => {
+                        const clientElement = document.createElement('div');
+                        clientElement.textContent = `ID: ${client.id}, Name: ${client.first_name} ${client.last_name}, Phone: ${client.cell_phone}, Package: ${client.browsing_package}`;
+                        resultsContainer.appendChild(clientElement);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

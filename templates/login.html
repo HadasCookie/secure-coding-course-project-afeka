@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Communication_LTD</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9fff9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #6c9976;
+        }
+        .login-container {
+            background-color: #ffffff;
+            border: 1px solid #a8c3ae;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            width: 300px;
+        }
+        .login-container h2 {
+            color: #6c9976;
+            margin-bottom: 30px;
+            padding: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .form-group input {
+            width: 92%;
+            padding: 10px;
+            border: 1px solid #a8c3ae;
+            border-radius: 7px;
+            font-size: 1em;
+        }
+        .form-actions {
+            margin-top: 30px;
+        }
+        .form-actions button {
+            background-color: #94aa99;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 60%;
+            margin-bottom: 10px;
+        }
+        .form-actions button:hover {
+            background-color: #6c9976;
+        }
+        .additional-links {
+            margin-top: 20px;
+        }
+        .additional-links a {
+            color: #6c9976;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .additional-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login to Communication_LTD</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Login</button>
+            </div>
+        </form>
+        <div class="additional-links">
+            <a href="/register" id="register">Register</a>
+            <a href="/forgot_password" id="forgot-password">Forgot Password?</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+                    window.location.href = data.redirect;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
