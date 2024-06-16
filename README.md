@@ -1,4 +1,3 @@
-# secure-coding-course-project-afeka
 # Communication_LTD Web Application
 
 ## Overview
