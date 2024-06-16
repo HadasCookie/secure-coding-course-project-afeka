@@ -29,7 +29,7 @@ Communication_LTD is a web-based information system designed for managing users 
 - MySQL Server
 - An Email Account for SMTP Configuration (e.g., Yahoo, Outlook)
 
-### Create .env File -
+### Create .env File
     SECRET_KEY=your_secret_key
     MYSQL_HOST=localhost
     MYSQL_USER=root
@@ -74,4 +74,4 @@ Communication_LTD is a web-based information system designed for managing users 
    cd Communication_LTD
    
 ### Run the Application
-   python main.py
+    - python main.py
